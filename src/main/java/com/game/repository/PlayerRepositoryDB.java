@@ -3,7 +3,6 @@ package com.game.repository;
 import com.game.entity.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.annotations.NamedQuery;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.query.NativeQuery;
@@ -48,29 +47,45 @@ public class PlayerRepositoryDB implements IPlayerRepository {
     @Override
     public int getAllCount() {
         try (Session session = sessionFactory.openSession()){
-            Query<Integer> query = session.createNamedQuery("Player_GetAllCount", Integer.class);
-            return query.list().get(0);
+            Query<Player> query = session.createNamedQuery("Player_GetAllCount", Player.class);
+            return query.list().size();
         }
     }
 
     @Override
     public Player save(Player player) {
-        return null;
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.save(player);
+            session.getTransaction().commit();
+            return player;
+        }
     }
 
     @Override
     public Player update(Player player) {
-        return null;
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.update(player);
+            session.getTransaction().commit();
+            return player;
+        }
     }
 
     @Override
     public Optional<Player> findById(long id) {
-        return Optional.empty();
+        try (Session session = sessionFactory.openSession()){
+            return Optional.ofNullable(session.get(Player.class, id));
+        }
     }
 
     @Override
     public void delete(Player player) {
-
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.delete(player);
+            session.getTransaction().commit();
+        }
     }
 
     @PreDestroy
