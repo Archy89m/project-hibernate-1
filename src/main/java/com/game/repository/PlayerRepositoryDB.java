@@ -20,8 +20,12 @@ public class PlayerRepositoryDB implements IPlayerRepository {
 
     public PlayerRepositoryDB() {
         Properties properties = new Properties();
-        properties.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-        properties.put(Environment.URL, "jdbc:mysql://localhost:3306/rpg");
+        //properties.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
+        //properties.put(Environment.URL, "jdbc:mysql://localhost:3306/rpg");
+        // spy
+        properties.put(Environment.DRIVER, "com.p6spy.engine.spy.P6SpyDriver");
+        properties.put(Environment.URL, "jdbc:p6spy:mysql://localhost:3306/rpg");
+        //
         properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
         properties.put(Environment.USER, "root");
         properties.put(Environment.PASS, "12345");
